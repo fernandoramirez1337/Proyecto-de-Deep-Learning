@@ -1,0 +1,96 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# Virtual Environment
+venv/
+ENV/
+env/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Deep Learning - Models (LARGE FILES)
+*.pth
+*.pt
+*.ckpt
+*.h5
+*.weights
+best_*.pth
+model_*.pth
+
+# Deep Learning - Data
+data/*.csv
+data/*.json
+data/*.txt
+data/*.parquet
+!data/.gitkeep
+
+# Preprocessing artifacts
+*.pkl
+*.pickle
+*_encoder.pkl
+
+# Training outputs
+results/plots/*.png
+results/plots/*.jpg
+results/plots/*.pdf
+results/metrics/*.json
+results/metrics/*.csv
+!results/plots/.gitkeep
+!results/metrics/.gitkeep
+
+# Generated images
+*.png
+*.jpg
+*.jpeg
+*.pdf
+!docs/*.png
+!docs/*.jpg
+
+# Logs
+*.log
+logs/
+wandb/
+tensorboard/
+runs/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+*.swp
+
+# Model checkpoints and experiments
+checkpoints/
+experiments/
+mlruns/
+
+# Keep directory structure
+!.gitkeep
