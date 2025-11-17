@@ -278,8 +278,8 @@ class OptimizedTrainer:
             epoch_time = time.time() - start_time
             overfit_gap = train_acc - val_acc
 
-            # Imprimir métricas fundamentales
-            print(f"Epoch {epoch+1}/{epochs} - Train: {train_acc:.4f} | Val: {val_acc:.4f} | F1: {val_f1:.4f} | Gap: {overfit_gap:+.4f}")
+            # Imprimir métricas
+            print(f"Época {epoch+1}/{epochs} - Train Acc: {train_acc:.4f} | Val Acc: {val_acc:.4f} | Val F1: {val_f1:.4f} | Overfit: {overfit_gap:+.4f}")
 
             # Guardar mejor modelo
             if val_acc > self.best_val_acc:
@@ -299,10 +299,10 @@ class OptimizedTrainer:
 
             # Early stopping
             if self.patience_counter >= patience:
-                print(f"\nEarly stopping - Best epoch: {self.best_epoch + 1} (Val Acc: {self.best_val_acc:.4f})")
+                print(f"\nEarly stopping! Mejor época: {self.best_epoch + 1} (Val Acc: {self.best_val_acc:.4f})")
                 break
 
-        print(f"\nTraining complete - Best Val Acc: {self.best_val_acc:.4f} (epoch {self.best_epoch + 1})")
+        print(f"\nEntrenamiento completo - Mejor Val Acc: {self.best_val_acc:.4f} (época {self.best_epoch + 1})")
 
     def plot_history(self, save_path='scibert_optimized_history.png'):
         """Graficar historial"""
@@ -358,19 +358,19 @@ def compute_class_weights_from_dataset(dataset, num_classes):
 
 def main():
     """Entrenamiento principal"""
-    # Configuración V3.8 - Fine-Tuning cs.AI Weight
-    # V3.7: cs.AI x2.0 → 57.39% acc, 28.22% cs.AI recall (MUY CERCA!)
-    # V3.8: cs.AI x2.3 → ajuste fino para alcanzar AMBOS objetivos
-    FREEZE_BERT_LAYERS = 3      # Mantener igual V3.7
-    DROPOUT = 0.35              # Mantener igual V3.7
+    # Configuración V3.7 - Balanced cs.AI Focus
+    # V3.6: cs.AI x3 → 51% recall pero Acc cayó a 50%
+    # V3.7: cs.AI x2 → buscar balance
+    FREEZE_BERT_LAYERS = 3      # Mantener capacidad de V3.6
+    DROPOUT = 0.35              # Mantener de V3.6
     BATCH_SIZE = 12             # Optimizado para M2
     EPOCHS = 10
-    LR = 5e-5                   # Mantener igual V3.7
-    WEIGHT_DECAY = 0.01         # Mantener igual V3.7
+    LR = 5e-5                   # Mantener de V3.6
+    WEIGHT_DECAY = 0.01         # Mantener de V3.6
     PATIENCE = 3
     USE_CLASS_WEIGHTS = True
     AGGRESSIVE_CS_AI = True
-    CS_AI_WEIGHT = 2.3          # AJUSTE FINO: x2.3 (era x2.0)
+    CS_AI_WEIGHT = 2.0          # AJUSTADO: x2 (era x3)
     NUM_WORKERS = 0
 
     # Device
@@ -436,12 +436,11 @@ def main():
 
     # Resultados finales
     print(f"\n{'='*60}")
-    print(f"FINAL RESULTS")
+    print(f"RESULTADOS FINALES")
     print(f"{'='*60}")
     print(f"Test Accuracy: {test_acc:.4f} ({test_acc*100:.2f}%)")
     print(f"Test F1-Score: {test_f1:.4f}")
-    print(f"\nClassification Report:")
-    print(classification_report(test_labels, test_preds, target_names=le.classes_, digits=4))
+    print(f"\n{classification_report(test_labels, test_preds, target_names=le.classes_, digits=4)}")
 
     report = classification_report(test_labels, test_preds,
                                    target_names=le.classes_, digits=4,
@@ -462,12 +461,9 @@ def main():
 
     # Evaluación de objetivos
     cs_ai_recall = report['cs.AI']['recall']
-    cs_ai_target_met = cs_ai_recall > 0.30
-    acc_target_met = test_acc >= 0.60
+    success = test_acc >= 0.60 and cs_ai_recall > 0.30
 
-    print(f"\nObjectives:")
-    print(f"  Test Accuracy >= 60%: {'YES' if acc_target_met else 'NO'} ({test_acc*100:.2f}%)")
-    print(f"  cs.AI Recall > 30%: {'YES' if cs_ai_target_met else 'NO'} ({cs_ai_recall*100:.2f}%)")
+    print(f"\nObjetivo alcanzado: {'✓ SI' if success else '✗ NO'}")
     print(f"{'='*60}")
 
 

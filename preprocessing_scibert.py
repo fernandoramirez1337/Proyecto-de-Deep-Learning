@@ -174,55 +174,39 @@ def prepare_scibert_data(use_light_model=False, test_size=0.15, val_size=0.15):
         )
 
     # Guardar label encoder
-    print("\n Guardando label encoder...")
     with open('scibert_label_encoder.pkl', 'wb') as f:
         pickle.dump(le, f)
-
-    print(" Preparacin completa!")
 
     return train_dataset, val_dataset, test_dataset, tokenizer, le
 
 
 def test_dataset():
     """Test rpido del dataset"""
-    print(" Testing SciBERT dataset preparation...")
+    print("Testing SciBERT dataset preparation...")
 
     # Test modelo dual
-    print("\n--- Modelo Dual ---")
+    print("\nDual Model")
     train_ds, val_ds, test_ds, tokenizer, le = prepare_scibert_data(use_light_model=False)
 
     # Verificar un batch
     train_loader = DataLoader(train_ds, batch_size=4, shuffle=True)
     batch = next(iter(train_loader))
 
-    print(f"\n Batch del modelo dual:")
-    print(f"   title_input_ids: {batch['title_input_ids'].shape}")
-    print(f"   title_attention_mask: {batch['title_attention_mask'].shape}")
-    print(f"   abstract_input_ids: {batch['abstract_input_ids'].shape}")
-    print(f"   abstract_attention_mask: {batch['abstract_attention_mask'].shape}")
-    print(f"   label: {batch['label'].shape}")
-
-    # Decodificar ejemplo
-    print(f"\n Ejemplo de ttulo tokenizado:")
-    print(f"   Tokens: {batch['title_input_ids'][0][:20]}")
-    print(f"   Texto: {tokenizer.decode(batch['title_input_ids'][0][:20])}")
+    print(f"Batch shapes:")
+    print(f"  title_input_ids: {batch['title_input_ids'].shape}")
+    print(f"  abstract_input_ids: {batch['abstract_input_ids'].shape}")
 
     # Test modelo ligero
-    print("\n\n--- Modelo Ligero ---")
+    print("\nLight Model")
     train_ds_light, _, _, _, _ = prepare_scibert_data(use_light_model=True)
 
     train_loader_light = DataLoader(train_ds_light, batch_size=4, shuffle=True)
     batch_light = next(iter(train_loader_light))
 
-    print(f"\n Batch del modelo ligero:")
-    print(f"   input_ids: {batch_light['input_ids'].shape}")
-    print(f"   attention_mask: {batch_light['attention_mask'].shape}")
-    print(f"   label: {batch_light['label'].shape}")
+    print(f"Batch shapes:")
+    print(f"  input_ids: {batch_light['input_ids'].shape}")
 
-    print(f"\n Ejemplo de texto combinado:")
-    print(f"   Texto: {tokenizer.decode(batch_light['input_ids'][0][:50])}...")
-
-    print("\n Dataset test completado!")
+    print("\nDataset test completed")
 
 
 if __name__ == "__main__":

@@ -10,10 +10,10 @@ export OMP_NUM_THREADS=4
 export MKL_NUM_THREADS=4
 export PYTORCH_MPS_PREFER_METAL=1
 
-echo "SciBERT V3.7 - Balanced cs.AI Focus"
-echo "======================================"
-echo "V3: cs.AI 26%, Acc 55% | V3.6: cs.AI 51%, Acc 50%"
-echo "V3.7: cs.AI weight x2 (was x3) - seeking balance"
+echo "SciBERT V3.8 - Fine-Tuning cs.AI Weight"
+echo "=========================================="
+echo "V3.7: cs.AI 28.22%, Acc 57.39% (SO CLOSE!)"
+echo "V3.8: cs.AI weight x2.3 (was x2.0) - final push"
 echo ""
 
 # Run the training script

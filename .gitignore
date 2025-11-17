@@ -70,8 +70,6 @@ results/metrics/*.csv
 *.jpg
 *.jpeg
 *.pdf
-!docs/*.png
-!docs/*.jpg
 
 # Logs
 *.log
