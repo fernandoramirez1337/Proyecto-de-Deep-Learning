@@ -1,10 +1,11 @@
 """
 Test Ensemble V2 + V3.7
 
-V2: 59.17% accuracy, 13.78% cs.AI recall (high acc, low cs.AI)
-V3.7: 57.39% accuracy, 28.22% cs.AI recall (medium acc, high cs.AI)
+V2 (actual): 57.39% accuracy, 7.56% cs.AI recall (medium acc, very low cs.AI)
+V3.7: 57.39% accuracy, 28.22% cs.AI recall (medium acc, good cs.AI)
 
-Goal: Combine strengths → ~58-59% accuracy with decent cs.AI recall
+Note: V2 trained worse than documented (was expected 59.17% acc, 13.78% cs.AI)
+Goal: See if ensemble provides any improvement
 """
 
 import torch
@@ -20,15 +21,16 @@ import seaborn as sns
 print("="*70)
 print("ENSEMBLE TEST: V2 + V3.7")
 print("="*70)
-print("\nV2 characteristics:")
-print("  - Test Accuracy: 59.17%")
-print("  - cs.AI Recall: 13.78%")
+print("\nV2 characteristics (actual results):")
+print("  - Test Accuracy: 57.39%")
+print("  - cs.AI Recall: 7.56%")
 print("  - Strategy: Over-regularized (FREEZE=8, DROPOUT=0.5)")
+print("  - Note: Worse than documented expectations")
 print("\nV3.7 characteristics:")
 print("  - Test Accuracy: 57.39%")
 print("  - cs.AI Recall: 28.22%")
 print("  - Strategy: Balanced (FREEZE=3, DROPOUT=0.35)")
-print("\nEnsemble goal: Combine high accuracy + decent cs.AI recall")
+print("\nEnsemble goal: See if combination provides any improvement")
 print("="*70 + "\n")
 
 # Device
@@ -170,10 +172,14 @@ print("="*70 + "\n")
 
 print(f"{'Model':<30} {'Accuracy':<12} {'cs.AI Recall':<15} {'Gap Total'}")
 print("-"*70)
-print(f"{'V2 (alone)':<30} {'59.17%':<12} {'13.78%':<15} {'4.22%'}")
+print(f"{'V2 (alone, actual)':<30} {'57.39%':<12} {'7.56%':<15} {'~8.4%'}")
 print(f"{'V3.7 (alone)':<30} {'57.39%':<12} {'28.22%':<15} {'4.39%'}")
 print(f"{'V3.7+TT (baseline)':<30} {'56.17%':<12} {'36.22%':<15} {'3.83%'}")
-print(f"{f'Ensemble ({best_result[\"name\"]})':<30} {f'{best_result[\"accuracy\"]*100:.2f}%':<12} {f'{best_result[\"cs_ai_recall\"]*100:.2f}%':<15} {f'{best_result[\"gap_total\"]*100:.2f}%'}")
+ensemble_name = f"Ensemble ({best_result['name']})"
+ensemble_acc = f"{best_result['accuracy']*100:.2f}%"
+ensemble_cs_ai = f"{best_result['cs_ai_recall']*100:.2f}%"
+ensemble_gap = f"{best_result['gap_total']*100:.2f}%"
+print(f"{ensemble_name:<30} {ensemble_acc:<12} {ensemble_cs_ai:<15} {ensemble_gap}")
 print("="*70)
 
 # Detailed report for best ensemble
