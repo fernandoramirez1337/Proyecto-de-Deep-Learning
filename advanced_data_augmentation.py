@@ -116,7 +116,7 @@ class BackTranslationAugmenter:
         """
         return self.back_translate(abstract, max_length=512)
 
-    def augment_dataset(self, df, target_category='cs.AI', augment_factor=1):
+    def augment_dataset(self, df, target_category='cs.AI', augment_factor=1, max_samples_to_augment=450):
         """
         Augment dataset by duplicating and back-translating target category
 
@@ -124,6 +124,8 @@ class BackTranslationAugmenter:
             df: DataFrame with columns [title, abstract, category]
             target_category: Category to augment (default: cs.AI)
             augment_factor: Number of augmented copies per sample (default: 1)
+            max_samples_to_augment: Maximum number of samples to augment (default: 450)
+                                   If None, augment all samples of target category
 
         Returns:
             Augmented DataFrame
@@ -142,11 +144,22 @@ class BackTranslationAugmenter:
         print(f"\nAugmentation strategy:")
         print(f"  Target category: {target_category}")
         print(f"  Augment factor: {augment_factor}x")
-        print(f"  Expected {target_category} after: {target_count * (1 + augment_factor)}")
-        print()
+        print(f"  Max samples to augment: {max_samples_to_augment if max_samples_to_augment else 'ALL'}")
 
         # Filter target category
         target_samples = df[df['category'] == target_category].copy()
+
+        # Limit samples if specified
+        if max_samples_to_augment and len(target_samples) > max_samples_to_augment:
+            print(f"  ⚠️  Limiting to {max_samples_to_augment} random samples (out of {len(target_samples)})")
+            target_samples = target_samples.sample(n=max_samples_to_augment, random_state=42)
+            samples_to_augment = max_samples_to_augment
+        else:
+            samples_to_augment = len(target_samples)
+
+        print(f"  Samples to augment: {samples_to_augment}")
+        print(f"  Expected {target_category} after: {target_count + samples_to_augment * augment_factor}")
+        print()
 
         # Create augmented copies
         augmented_samples = []
@@ -189,7 +202,8 @@ class BackTranslationAugmenter:
 def augment_arxiv_dataset(input_path='data/arxiv_papers_raw.csv',
                          output_path='data/arxiv_papers_augmented.csv',
                          target_category='cs.AI',
-                         augment_factor=1):
+                         augment_factor=1,
+                         max_samples_to_augment=450):
     """
     Main function to augment ArXiv dataset
 
@@ -198,13 +212,15 @@ def augment_arxiv_dataset(input_path='data/arxiv_papers_raw.csv',
         output_path: Path to save augmented CSV
         target_category: Category to augment
         augment_factor: Number of augmented copies per sample
+        max_samples_to_augment: Maximum number of samples to augment (default: 450)
     """
     print("="*70)
     print("ARXIV DATASET AUGMENTATION PIPELINE")
     print("="*70)
     print(f"\nInput: {input_path}")
     print(f"Output: {output_path}")
-    print(f"Target: {target_category} (x{augment_factor+1})")
+    print(f"Target: {target_category} (limit: {max_samples_to_augment} samples)")
+    print(f"Augment factor: {augment_factor}x")
     print("="*70 + "\n")
 
     # Check input exists
@@ -221,7 +237,7 @@ def augment_arxiv_dataset(input_path='data/arxiv_papers_raw.csv',
     augmenter = BackTranslationAugmenter()
 
     # Augment
-    augmented_df = augmenter.augment_dataset(df, target_category, augment_factor)
+    augmented_df = augmenter.augment_dataset(df, target_category, augment_factor, max_samples_to_augment)
 
     # Save
     print(f"Saving augmented dataset to {output_path}...")
@@ -248,7 +264,8 @@ if __name__ == "__main__":
         input_path='data/arxiv_papers_raw.csv',
         output_path='data/arxiv_papers_augmented.csv',
         target_category='cs.AI',
-        augment_factor=1  # Duplicate cs.AI samples (450 → 900)
+        augment_factor=1,  # Duplicate cs.AI samples
+        max_samples_to_augment=450  # Limit to 450 samples for reasonable time (~50 min)
     )
 
     if augmented_df is not None:
