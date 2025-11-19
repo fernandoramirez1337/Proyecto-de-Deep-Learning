@@ -359,12 +359,12 @@ def compute_class_weights_from_dataset(dataset, num_classes):
 def main():
     """Entrenamiento principal"""
     # Configuración OPTIMIZADA V3 - Balance entre capacidad y regularización
-    FREEZE_BERT_LAYERS = 4      # Reducido de 8 → Más capacidad de aprendizaje
-    DROPOUT = 0.4               # Reducido de 0.5 → Menos restricción
+    FREEZE_BERT_LAYERS = 4      # Reducido de 8 -> Más capacidad de aprendizaje
+    DROPOUT = 0.4               # Reducido de 0.5 -> Menos restricción
     BATCH_SIZE = 12             # Optimizado para M2
     EPOCHS = 10
-    LR = 5e-5                   # Aumentado de 3e-5 → Aprendizaje más rápido
-    WEIGHT_DECAY = 0.01         # Reducido de 0.05 → Menos penalización
+    LR = 5e-5                   # Aumentado de 3e-5 -> Aprendizaje más rápido
+    WEIGHT_DECAY = 0.01         # Reducido de 0.05 -> Menos penalización
     PATIENCE = 3
     USE_CLASS_WEIGHTS = True
     NUM_WORKERS = 0
@@ -454,7 +454,7 @@ def main():
     cs_ai_recall = report['cs.AI']['recall']
     success = test_acc >= 0.60 and cs_ai_recall > 0.30
 
-    print(f"\nObjetivo alcanzado: {'✓ SI' if success else '✗ NO'}")
+    print(f"\nObjetivo alcanzado: {'OK SI' if success else 'NO NO'}")
     print(f"{'='*60}")
 
 

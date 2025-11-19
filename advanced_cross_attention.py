@@ -34,7 +34,7 @@ class CrossAttentionSciBERT(nn.Module):
         # Embedding dropout
         self.embedding_dropout = nn.Dropout(0.1)
 
-        # Cross-Attention: Title → Abstract
+        # Cross-Attention: Title -> Abstract
         self.cross_attn_title_to_abstract = nn.MultiheadAttention(
             embed_dim=self.hidden_size,
             num_heads=8,
@@ -42,7 +42,7 @@ class CrossAttentionSciBERT(nn.Module):
             batch_first=True
         )
 
-        # Cross-Attention: Abstract → Title
+        # Cross-Attention: Abstract -> Title
         self.cross_attn_abstract_to_title = nn.MultiheadAttention(
             embed_dim=self.hidden_size,
             num_heads=8,
@@ -184,20 +184,20 @@ def compare_architectures():
     print("="*70)
 
     print("\nV3.7 Original (Simple Concatenation):")
-    print("  title_hidden → attention_pool → title_pooled [768]")
-    print("  abstract_hidden → attention_pool → abstract_pooled [768]")
-    print("  concat([title_pooled, abstract_pooled]) → [1536]")
-    print("  fusion_network → [4 classes]")
+    print("  title_hidden -> attention_pool -> title_pooled [768]")
+    print("  abstract_hidden -> attention_pool -> abstract_pooled [768]")
+    print("  concat([title_pooled, abstract_pooled]) -> [1536]")
+    print("  fusion_network -> [4 classes]")
     print("  ")
     print("  Limitation: No interaction between title and abstract")
 
     print("\nCross-Attention (This Implementation):")
-    print("  title_hidden → cross_attn(query=title, key/value=abstract) → title_enhanced")
-    print("  abstract_hidden → cross_attn(query=abstract, key/value=title) → abstract_enhanced")
-    print("  title_enhanced → attention_pool → title_pooled [768]")
-    print("  abstract_enhanced → attention_pool → abstract_pooled [768]")
-    print("  concat([title_pooled, abstract_pooled]) → [1536]")
-    print("  fusion_network → [4 classes]")
+    print("  title_hidden -> cross_attn(query=title, key/value=abstract) -> title_enhanced")
+    print("  abstract_hidden -> cross_attn(query=abstract, key/value=title) -> abstract_enhanced")
+    print("  title_enhanced -> attention_pool -> title_pooled [768]")
+    print("  abstract_enhanced -> attention_pool -> abstract_pooled [768]")
+    print("  concat([title_pooled, abstract_pooled]) -> [1536]")
+    print("  fusion_network -> [4 classes]")
     print("  ")
     print("  Advantage: Title and abstract inform each other!")
 

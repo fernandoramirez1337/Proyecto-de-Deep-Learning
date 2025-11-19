@@ -454,7 +454,7 @@ def main():
     cs_ai_recall = report['cs.AI']['recall']
     success = test_acc >= 0.60 and cs_ai_recall > 0.30
 
-    print(f"\nObjetivo alcanzado: {'✓ SI' if success else '✗ NO'}")
+    print(f"\nObjetivo alcanzado: {'OK SI' if success else 'NO NO'}")
     print(f"{'='*60}")
 
 

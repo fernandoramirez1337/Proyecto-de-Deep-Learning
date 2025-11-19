@@ -2,14 +2,14 @@
 Training SciBERT V5.0: Cross-Attention + Back-Translation Augmentation
 
 STRATEGY:
-- Cross-Attention architecture for better title↔abstract interaction
-- Back-Translation augmented cs.AI samples (450 → 900)
+- Cross-Attention architecture for better title<->abstract interaction
+- Back-Translation augmented cs.AI samples (450 -> 900)
 - Expected improvement: +3-4% total (+1-2% Cross-Attention, +1.5-2.5% augmentation)
 - Target: 59-60% accuracy
 
 CONFIGURATION:
-- Architecture: CrossAttentionSciBERT (bidirectional title↔abstract attention)
-- Dataset: data/arxiv_papers_augmented.csv (cs.AI duplicated via EN→ES→EN)
+- Architecture: CrossAttentionSciBERT (bidirectional title<->abstract attention)
+- Dataset: data/arxiv_papers_augmented.csv (cs.AI duplicated via EN->ES->EN)
 - FREEZE_LAYERS: 3 (same as V3.7)
 - DROPOUT: 0.35 (same as V3.7)
 - CLASS_WEIGHTS: [2.0, 1.0, 1.0, 1.0] (same as V3.7)
@@ -61,7 +61,7 @@ def prepare_augmented_data(data_path='data/arxiv_papers_augmented.csv',
         exit(1)
 
     df = pd.read_csv(data_path)
-    print(f"\n✓ Loaded {len(df)} samples")
+    print(f"\nOK Loaded {len(df)} samples")
     print(f"\nClass distribution:")
     print(df['category'].value_counts())
     print()
@@ -298,7 +298,7 @@ class OptimizedTrainer:
                 self.best_val_acc = val_acc
                 self.best_model_state = self.model.state_dict().copy()
                 self.patience_counter = 0
-                print(f"  ✓ New best model! (val_acc: {val_acc:.4f})")
+                print(f"  OK New best model! (val_acc: {val_acc:.4f})")
             else:
                 self.patience_counter += 1
                 print(f"  No improvement ({self.patience_counter}/{self.patience})")
@@ -308,7 +308,7 @@ class OptimizedTrainer:
                 break
 
         # Restore best model
-        print(f"\n✓ Training complete!")
+        print(f"\nOK Training complete!")
         print(f"  Best val accuracy: {self.best_val_acc:.4f} ({self.best_val_acc*100:.2f}%)")
         self.model.load_state_dict(self.best_model_state)
 
@@ -340,7 +340,7 @@ def plot_history(history, save_path='scibert_v5_history.png'):
     plt.tight_layout()
     plt.savefig(save_path, dpi=150, bbox_inches='tight')
     plt.close()
-    print(f"✓ History plot saved: {save_path}")
+    print(f"OK History plot saved: {save_path}")
 
 
 def main():
@@ -398,7 +398,7 @@ def main():
     print(f"\nArchitecture: CrossAttentionSciBERT")
     print(f"  Freeze layers: {FREEZE_BERT_LAYERS}")
     print(f"  Dropout: {DROPOUT}")
-    print(f"  Innovation: Bidirectional title↔abstract cross-attention")
+    print(f"  Innovation: Bidirectional title<->abstract cross-attention")
     print("="*70 + "\n")
 
     model = CrossAttentionSciBERT(
@@ -469,11 +469,11 @@ def main():
     plt.tight_layout()
     plt.savefig('scibert_v5_confusion.png', dpi=150, bbox_inches='tight')
     plt.close()
-    print("\n✓ Confusion matrix saved: scibert_v5_confusion.png")
+    print("\nOK Confusion matrix saved: scibert_v5_confusion.png")
 
     # Save model
     torch.save(model.state_dict(), 'best_scibert_v5_crossattn_aug.pth')
-    print("✓ Model saved: best_scibert_v5_crossattn_aug.pth")
+    print("OK Model saved: best_scibert_v5_crossattn_aug.pth")
 
     # Objectives check
     print("\n" + "="*70)
@@ -487,8 +487,8 @@ def main():
     acc_target_met = test_acc >= 0.60
     cs_ai_target_met = cs_ai_recall > 0.30
 
-    print(f"\nTest Accuracy >= 60%: {'✅ YES' if acc_target_met else '❌ NO'} ({test_acc*100:.2f}%)")
-    print(f"cs.AI Recall > 30%:   {'✅ YES' if cs_ai_target_met else '❌ NO'} ({cs_ai_recall*100:.2f}%)")
+    print(f"\nTest Accuracy >= 60%: {'YES YES' if acc_target_met else 'NO NO'} ({test_acc*100:.2f}%)")
+    print(f"cs.AI Recall > 30%:   {'YES YES' if cs_ai_target_met else 'NO NO'} ({cs_ai_recall*100:.2f}%)")
     print(f"\nGap Total: {gap_total:.4f} ({gap_total*100:.2f}%)")
 
     # Compare with baseline
@@ -511,13 +511,13 @@ def main():
     print(f"{'Gap Total':<20} {baseline_gap*100:>6.2f}% {gap_total*100:>11.2f}% {improvement_gap*100:>11.2f}%")
 
     if acc_target_met and cs_ai_target_met:
-        print("\n" + "🎉"*20)
-        print("✅ SUCCESS! BOTH OBJECTIVES MET!")
-        print("🎉"*20)
+        print("\n" + ""*20)
+        print("YES SUCCESS! BOTH OBJECTIVES MET!")
+        print(""*20)
     elif test_acc > baseline_acc:
-        print("\n✅ Improvement over baseline!")
+        print("\nYES Improvement over baseline!")
     else:
-        print("\n⚠️  No improvement over baseline")
+        print("\nWARNING:  No improvement over baseline")
 
     print("\n" + "="*70 + "\n")
 

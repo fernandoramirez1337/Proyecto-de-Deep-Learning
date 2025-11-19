@@ -359,8 +359,8 @@ def compute_class_weights_from_dataset(dataset, num_classes):
 def main():
     """Entrenamiento principal"""
     # Configuración V3.8 - Fine-Tuning cs.AI Weight
-    # V3.7: cs.AI x2.0 → 57.39% acc, 28.22% cs.AI recall (MUY CERCA!)
-    # V3.8: cs.AI x2.3 → ajuste fino para alcanzar AMBOS objetivos
+    # V3.7: cs.AI x2.0 -> 57.39% acc, 28.22% cs.AI recall (MUY CERCA!)
+    # V3.8: cs.AI x2.3 -> ajuste fino para alcanzar AMBOS objetivos
     FREEZE_BERT_LAYERS = 3      # Mantener igual V3.7
     DROPOUT = 0.35              # Mantener igual V3.7
     BATCH_SIZE = 12             # Optimizado para M2

@@ -359,8 +359,8 @@ def compute_class_weights_from_dataset(dataset, num_classes):
 def main():
     """Entrenamiento principal"""
     # Configuración V3.7 - Balanced cs.AI Focus
-    # V3.6: cs.AI x3 → 51% recall pero Acc cayó a 50%
-    # V3.7: cs.AI x2 → buscar balance
+    # V3.6: cs.AI x3 -> 51% recall pero Acc cayó a 50%
+    # V3.7: cs.AI x2 -> buscar balance
     FREEZE_BERT_LAYERS = 3      # Mantener capacidad de V3.6
     DROPOUT = 0.35              # Mantener de V3.6
     BATCH_SIZE = 12             # Optimizado para M2
@@ -463,7 +463,7 @@ def main():
     cs_ai_recall = report['cs.AI']['recall']
     success = test_acc >= 0.60 and cs_ai_recall > 0.30
 
-    print(f"\nObjetivo alcanzado: {'✓ SI' if success else '✗ NO'}")
+    print(f"\nObjetivo alcanzado: {'OK SI' if success else 'NO NO'}")
     print(f"{'='*60}")
 
 

@@ -25,8 +25,8 @@ Multi-class classification of ArXiv papers into 4 CS categories using SciBERT.
 
 ### Final Solution
 **V5.0 - Cross-Attention + Back-Translation**
-- Cross-attention architecture (title ↔ abstract)
-- Back-translation augmentation (EN→ES→EN, 450 cs.AI samples)
+- Cross-attention architecture (title <-> abstract)
+- Back-translation augmentation (EN->ES->EN, 450 cs.AI samples)
 - Class weighting (cs.AI x2.0)
 - Test acc: 57.01%, cs.AI recall: 41.89%
 - All subsequent attempts failed (V5.0+TT, V5.1)
@@ -76,13 +76,13 @@ Output: `best_scibert_v5_crossattn_aug.pth`
 
 ### advanced_cross_attention.py
 CrossAttentionSciBERT model.
-- Bidirectional cross-attention (title ↔ abstract)
+- Bidirectional cross-attention (title <-> abstract)
 - 8 attention heads per direction
 - Attention pooling + fusion network
 
 ### advanced_data_augmentation.py
 Back-translation augmentation.
-- EN → ES → EN paraphrasing
+- EN -> ES -> EN paraphrasing
 - 450 cs.AI samples (~50-60 min)
 
 ### preprocessing_scibert.py
@@ -144,13 +144,13 @@ Input: Title (32 tokens) + Abstract (128 tokens)
 ↓
 Title [B,32,768]    Abstract [B,128,768]
 ↓                   ↓
-[Cross-Attention: Title→Abstract, Abstract→Title]
+[Cross-Attention: Title->Abstract, Abstract->Title]
 ↓                   ↓
 [Attention Pooling]
 ↓
-[Concat] → [1536]
+[Concat] -> [1536]
 ↓
-[Fusion: 512→256→128→4]
+[Fusion: 512->256->128->4]
 ↓
 [4 logits]
 ```

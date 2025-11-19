@@ -10,8 +10,8 @@ echo "Cross-Attention Architecture + Back-Translation Augmentation"
 echo "======================================================================"
 echo ""
 echo "Strategy:"
-echo "  1. Back-Translation: Augment 450 cs.AI samples via EN→ES→EN"
-echo "  2. Cross-Attention: Bidirectional title↔abstract interaction"
+echo "  1. Back-Translation: Augment 450 cs.AI samples via EN->ES->EN"
+echo "  2. Cross-Attention: Bidirectional title<->abstract interaction"
 echo "  3. Expected improvement: +3-4% total"
 echo ""
 echo "Configuration:"
@@ -38,7 +38,7 @@ export OMP_NUM_THREADS=4
 export MKL_NUM_THREADS=4
 export PYTORCH_MPS_PREFER_METAL=1
 
-echo "✓ Environment variables set for M2"
+echo "OK Environment variables set for M2"
 echo ""
 
 # Check if original dataset exists
@@ -48,7 +48,7 @@ if [ ! -f "data/arxiv_papers_raw.csv" ]; then
     exit 1
 fi
 
-echo "✓ Original dataset found"
+echo "OK Original dataset found"
 echo ""
 
 # Step 1: Data Augmentation
@@ -56,7 +56,7 @@ echo "======================================================================"
 echo "STEP 1: DATA AUGMENTATION (Back-Translation)"
 echo "======================================================================"
 echo ""
-echo "Augmenting 450 cs.AI samples via English→Spanish→English translation..."
+echo "Augmenting 450 cs.AI samples via English->Spanish->English translation..."
 echo "This will take ~50-60 minutes"
 echo ""
 
@@ -69,7 +69,7 @@ if [ ! -f "data/arxiv_papers_augmented.csv" ]; then
         exit 1
     fi
 else
-    echo "⚠️  Augmented dataset already exists: data/arxiv_papers_augmented.csv"
+    echo "WARNING:  Augmented dataset already exists: data/arxiv_papers_augmented.csv"
     echo ""
     read -p "Use existing augmented dataset? (y/n): " -n 1 -r
     echo ""
@@ -87,7 +87,7 @@ else
 fi
 
 echo ""
-echo "✓ Data augmentation complete!"
+echo "OK Data augmentation complete!"
 echo ""
 
 # Step 2: Training
@@ -104,7 +104,7 @@ python train_scibert_v5_crossattn_aug.py
 if [ $? -eq 0 ]; then
     echo ""
     echo "======================================================================"
-    echo "✓ V5.0 TRAINING COMPLETE!"
+    echo "OK V5.0 TRAINING COMPLETE!"
     echo "======================================================================"
     echo ""
     echo "Results saved:"
@@ -116,13 +116,13 @@ if [ $? -eq 0 ]; then
     echo "  1. Review test metrics (should be ~59-60% accuracy)"
     echo "  2. If accuracy < 60%, consider threshold tuning:"
     echo "     python threshold_tuning_v5.py"
-    echo "  3. If accuracy >= 60%, celebrate! 🎉"
+    echo "  3. If accuracy >= 60%, celebrate! "
     echo ""
     echo "======================================================================"
 else
     echo ""
     echo "======================================================================"
-    echo "✗ V5.0 TRAINING FAILED"
+    echo "NO V5.0 TRAINING FAILED"
     echo "======================================================================"
     echo ""
     echo "Please check error messages above"

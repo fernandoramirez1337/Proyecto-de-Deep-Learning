@@ -20,10 +20,10 @@
 `advanced_data_augmentation.py`
 
 ```python
-EN → ES → EN paraphrasing
+EN -> ES -> EN paraphrasing
 Models: Helsinki-NLP/opus-mt-{en-es,es-en}
 Process: 450 cs.AI samples, ~50-60 min
-Result: 12,000 → 12,450 samples
+Result: 12,000 -> 12,450 samples
 ```
 
 ### 2. Cross-Attention Architecture
@@ -31,7 +31,7 @@ Result: 12,000 → 12,450 samples
 `advanced_cross_attention.py`
 
 ```python
-Title ↔ Abstract bidirectional attention
+Title <-> Abstract bidirectional attention
 8 attention heads per direction
 Residual connections + LayerNorm
 Attention pooling for sequence aggregation

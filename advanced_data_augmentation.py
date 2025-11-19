@@ -2,8 +2,8 @@
 Back-Translation Data Augmentation for cs.AI Class
 
 Mejora esperada: +1.5-2.5% accuracy
-Técnica: Traducción EN→ES→EN para generar paráfrasis
-Target: Duplicar muestras de cs.AI (450 → 900)
+Técnica: Traducción EN->ES->EN para generar paráfrasis
+Target: Duplicar muestras de cs.AI (450 -> 900)
 """
 
 import torch
@@ -17,8 +17,8 @@ class BackTranslationAugmenter:
     Data augmentation mediante back-translation
 
     Process:
-    1. English text → Spanish translation
-    2. Spanish translation → English back-translation
+    1. English text -> Spanish translation
+    2. Spanish translation -> English back-translation
     3. Result: Paraphrased version of original
     """
 
@@ -38,21 +38,21 @@ class BackTranslationAugmenter:
 
         print(f"Loading translation models on {self.device}...")
 
-        # English → Spanish
-        print("  Loading EN→ES model...")
+        # English -> Spanish
+        print("  Loading EN->ES model...")
         self.model_en_es = MarianMTModel.from_pretrained('Helsinki-NLP/opus-mt-en-es')
         self.tokenizer_en_es = MarianTokenizer.from_pretrained('Helsinki-NLP/opus-mt-en-es')
         self.model_en_es.to(self.device)
         self.model_en_es.eval()
 
-        # Spanish → English
-        print("  Loading ES→EN model...")
+        # Spanish -> English
+        print("  Loading ES->EN model...")
         self.model_es_en = MarianMTModel.from_pretrained('Helsinki-NLP/opus-mt-es-en')
         self.tokenizer_es_en = MarianTokenizer.from_pretrained('Helsinki-NLP/opus-mt-es-en')
         self.model_es_en.to(self.device)
         self.model_es_en.eval()
 
-        print("✓ Translation models loaded\n")
+        print("OK Translation models loaded\n")
 
     def translate(self, text, model, tokenizer, max_length=512):
         """
@@ -83,7 +83,7 @@ class BackTranslationAugmenter:
 
     def back_translate(self, text, max_length=512):
         """
-        Perform back-translation: EN → ES → EN
+        Perform back-translation: EN -> ES -> EN
 
         Args:
             text: Original English text
@@ -93,10 +93,10 @@ class BackTranslationAugmenter:
             Back-translated (paraphrased) English text
         """
         try:
-            # EN → ES
+            # EN -> ES
             spanish = self.translate(text, self.model_en_es, self.tokenizer_en_es, max_length)
 
-            # ES → EN
+            # ES -> EN
             back_translated = self.translate(spanish, self.model_es_en, self.tokenizer_es_en, max_length)
 
             return back_translated
@@ -151,7 +151,7 @@ class BackTranslationAugmenter:
 
         # Limit samples if specified
         if max_samples_to_augment and len(target_samples) > max_samples_to_augment:
-            print(f"  ⚠️  Limiting to {max_samples_to_augment} random samples (out of {len(target_samples)})")
+            print(f"  WARNING:  Limiting to {max_samples_to_augment} random samples (out of {len(target_samples)})")
             target_samples = target_samples.sample(n=max_samples_to_augment, random_state=42)
             samples_to_augment = max_samples_to_augment
         else:
@@ -188,7 +188,7 @@ class BackTranslationAugmenter:
         total_after = len(final_df)
         target_after = len(final_df[final_df['category'] == target_category])
 
-        print(f"\n✓ Augmentation complete!")
+        print(f"\nOK Augmentation complete!")
         print(f"\nFinal dataset:")
         print(f"  Total samples: {total_after} (+{total_after - total_before})")
         print(f"  {target_category} samples: {target_after} (+{target_after - target_count})")
@@ -231,7 +231,7 @@ def augment_arxiv_dataset(input_path='data/arxiv_papers_raw.csv',
     # Load dataset
     print("Loading dataset...")
     df = pd.read_csv(input_path)
-    print(f"✓ Loaded {len(df)} samples\n")
+    print(f"OK Loaded {len(df)} samples\n")
 
     # Create augmenter
     augmenter = BackTranslationAugmenter()
@@ -243,10 +243,10 @@ def augment_arxiv_dataset(input_path='data/arxiv_papers_raw.csv',
     print(f"Saving augmented dataset to {output_path}...")
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     augmented_df.to_csv(output_path, index=False)
-    print(f"✓ Saved {len(augmented_df)} samples\n")
+    print(f"OK Saved {len(augmented_df)} samples\n")
 
     print("="*70)
-    print("✓ AUGMENTATION COMPLETE")
+    print("OK AUGMENTATION COMPLETE")
     print("="*70)
     print(f"\nNext step: Train model on augmented data")
     print(f"  python train_scibert_v5_crossattn_aug.py")
@@ -269,4 +269,4 @@ if __name__ == "__main__":
     )
 
     if augmented_df is not None:
-        print("\n✓ Ready to train V5.0 with augmented data!")
+        print("\nOK Ready to train V5.0 with augmented data!")
