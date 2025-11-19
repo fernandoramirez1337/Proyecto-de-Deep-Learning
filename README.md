@@ -7,13 +7,12 @@ Proyecto de Deep Learning para clasificacion de papers cientificos de arXiv en 4
 **Modelo Hibrido CNN-LSTM**
 
 Componentes:
-- **CNN 1D**: Extraccion de caracteristicas de abstracts (kernel sizes 3,4,5)
-- **LSTM Bidireccional**: Procesamiento secuencial de titulos (2 layers)
+- **CNN 1D**: Extraccion de caracteristicas de abstracts (kernel sizes 3,4,5) + max pooling global
+- **LSTM Bidireccional**: Procesamiento secuencial de titulos (2 layers, 256 hidden units)
 - **Self-Attention**: Sobre outputs del LSTM para identificar palabras relevantes del titulo
-- **Global Attention**: Sobre features de CNN para ponderar segmentos del abstract
 - **Weighted Attention Fusion**: Aprende importancia relativa de titulo vs abstract
-- **Regularizacion**: Dropout variacional y batch normalization
-- **Visualizacion**: Mapas de atencion para interpretar predicciones
+- **Regularizacion**: Dropout variacional (0.5) y batch normalization
+- **Visualizacion**: Mapas de atencion del titulo y pesos de fusion
 
 Implementacion completa en PyTorch.
 
