@@ -8,13 +8,11 @@ Clasificacion de papers cientificos de arXiv en 4 categorias CS usando SciBERT.
 
 | Metrica | Valor | Objetivo |
 |---------|-------|----------|
-| Test Accuracy | 52.03% | 60% |
-| cs.AI Recall | 37.45% | >30% |
-| cs.CL Recall | 0.6667 | - |
-| cs.CV Recall | 0.7044 | - |
-| cs.LG Recall | 0.3578 | - |
-
-**Nota:** Resultados obtenidos en Google Colab T4 GPU con dataset augmented.
+| Test Accuracy | 57.01% | 60% |
+| cs.AI Recall | 41.89% | >30% |
+| cs.CL Recall | 0.7481 | - |
+| cs.CV Recall | 0.7000 | - |
+| cs.LG Recall | 0.5156 | - |
 
 ## Uso
 
@@ -61,7 +59,7 @@ Proyecto-de-Deep-Learning/
 ```python
 FREEZE_BERT_LAYERS = 3
 DROPOUT = 0.35
-BATCH_SIZE = 12  # M2, 32 for GPU
+BATCH_SIZE = 12  # M2
 LR = 5e-5
 WEIGHT_DECAY = 0.01
 CLASS_WEIGHTS = [2.0, 1.0, 1.0, 1.0]
@@ -84,5 +82,13 @@ pandas
 - cs.CL - Computacion y Lenguaje
 - cs.CV - Vision por Computadora
 - cs.LG - Machine Learning
+
+## Versiones
+
+| Version | Acc | cs.AI Recall |
+|---------|-----|--------------|
+| V5.0 | 57.01% | 41.89% |
+| V3.7+TT | 56.17% | 36.22% |
+| V3.7 | 57.39% | 28.22% |
 
 Ver `SOLUTION_FINAL.md` para historial completo.
